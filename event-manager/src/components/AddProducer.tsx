@@ -2,9 +2,13 @@ import { useState } from "react";
 import { addProducer } from '../services/ProducerApi'; // Assuming you have a service to handle API calls
 import React from "react";
 import { ChangeEvent } from "react";
+import { useNavigate } from "react-router-dom"; // הוספת הייבוא
+import { useAppNavigation } from "../contexts/AppNavigationContext";
+
 const AddProducer = () => {
     const [message, setMessage] = useState(""); // הודעה למשתמש
-
+    const navigate = useNavigate(); // יצירת הפונקציה
+const appNavigate = useAppNavigation();
     const [producer, setProducer] = useState({
         name: "",
         email: "",
@@ -22,12 +26,12 @@ const AddProducer = () => {
             const result = await addProducer(producer);
             setMessage("המפיקה נוספה בהצלחה! 🎉");
             setProducer({ name: "", email: "", phone: "", description: "" }); // ניקוי הטופס
-            console.log('Producer added:', result);
+            navigate('/'); // נווט לדף הבית לאחר ההצלחה
         } catch (error) {
             console.error('Error adding producer:', error);
             setMessage("שגיאה בהוספת מפיקה. נסה שוב.");
         }
-        console.log('Adding producer:', { name: producer.name, email: producer.email, phone: producer.phone });
+        console.log('AddProducer - Adding producer:', { name: producer.name, email: producer.email, phone: producer.phone });
         e.preventDefault(); // למנוע רענון הדף
     };
 
@@ -64,7 +68,10 @@ const AddProducer = () => {
                 <button type="submit">הוסף מפיקה</button>
                 {message && <p style={{ color: message.includes("שגיאה") ? "red" : "green" }}>{message}</p>}
             </form>
-
+            <>
+      <button onClick={() => appNavigate(-1)}>⬅ חזור אחורה</button>
+      <button onClick={() => appNavigate("/")}>🏠 לדף הבית</button>
+    </>
         </div>
     );
 }

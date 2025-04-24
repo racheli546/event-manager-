@@ -1,7 +1,12 @@
 
 export type Event = {
-    id: number,
-    name?: string,
+    id: string,
+    title?: string,
+    date?: string,
     description?: string,
-    producerId: string
+    payment?: number,
+    // producerId: string,
+    producerEmail?: string,
+    producerName?: string,
+    producerPhone?: string,
 }
